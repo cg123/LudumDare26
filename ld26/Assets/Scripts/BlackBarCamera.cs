@@ -41,7 +41,7 @@ public class BlackBarCamera : OVRCamera {
 	
 	void OnGUI()
 	{
-		GUIStereoBox(0, 0, 640, 400 - Mathf.FloorToInt(displayPixels / 2.0f), "", Color.black);
-		GUIStereoBox(0, 400 + Mathf.CeilToInt(displayPixels / 2.0f), 640, 400 - Mathf.CeilToInt(displayPixels / 2.0f), "", Color.black);
+		GUIStereoBox(0, 0, 1280, 400 - Mathf.FloorToInt(displayPixels / 2.0f), "", Color.black);
+		GUIStereoBox(0, 400 + Mathf.CeilToInt(displayPixels / 2.0f), 1280, 400 - Mathf.CeilToInt(displayPixels / 2.0f), "", Color.black);
 	}
 }
