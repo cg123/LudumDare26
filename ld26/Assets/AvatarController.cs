@@ -8,7 +8,7 @@ public class AvatarController : MonoBehaviour {
 	// Rotation amount from inputs (passed down into CameraController)
 	//private float YRotation = 0.0f;
 
-	//public GameObject fwdDir = null;
+	public GameObject fwdDir = null;
 	public float moveSpeed = 0.0f;
 	public float turnSpeed = 0.0f;
 	private CharacterController charController = null;
@@ -28,9 +28,10 @@ public class AvatarController : MonoBehaviour {
 		//transform.eulerAngles = currAngle;
 		float fwd = Input.GetAxis ("Vertical") * moveSpeed;
 		float turn = Input.GetAxis ("Horizontal") * turnSpeed;
-		charController.Move(transform.forward * fwd * Time.deltaTime);
+		charController.Move(fwdDir.transform.forward * fwd * Time.deltaTime);
 		
-		transform.eulerAngles = camController.gameObject.transform.localRotation.eulerAngles + new Vector3(0.0f,yRotOffset,0.0f);
+		fwdDir.transform.eulerAngles = camController.gameObject.transform.eulerAngles;// + new Vector3(0.0f,yRotOffset,0.0f);
+		camController.SetYRotation(yRotOffset);
 		//transform.position += transform.forward * fwd * Time.deltaTime;
 		yRotOffset += turn * Time.deltaTime;
 		//fwdDir.transform.Rotate(Vector3.up * );
