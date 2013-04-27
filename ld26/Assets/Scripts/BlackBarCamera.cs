@@ -10,6 +10,7 @@ public class BlackBarCamera : OVRCamera {
 		blackTexture.Apply();
 		base.Awake();
 	}
+
 	private int    	StereoSpreadX 	= -40;
 	
 	public int displayPixels = 5;
