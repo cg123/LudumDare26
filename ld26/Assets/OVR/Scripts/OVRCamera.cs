@@ -308,7 +308,7 @@ public class OVRCamera : OVRComponent
 		gameObject.camera.transform.position += q * EyePosition;
 
 		// Fix by Charley to eliminate any rotation except y.
-		gameObject.camera.transform.rotation = Quaternion.Euler(0, gameObject.camera.transform.rotation.eulerAngles.y, 0);		
+		gameObject.camera.transform.rotation = Quaternion.Euler(0, gameObject.camera.transform.rotation.eulerAngles.y, gameObject.camera.transform.rotation.eulerAngles.z);		
 	}
 	
 	// CreatePerspectiveMatrix
