@@ -2,16 +2,28 @@ using UnityEngine;
 using System.Collections;
 
 public class AvatarController : MonoBehaviour {
+	public GameObject riftCam = null;
+	public GameObject stdCam = null;
 	public GameObject fwdDir = null;
 	public float moveSpeed = 0.0f;
 	public float turnSpeed = 0.0f;
 	private CharacterController charController = null;
 	private OVRCameraController camController = null;
-	private float yRotOffset = 0.0f;
+	public float yRotOffset = 0.0f;
 
 	void Awake () {
+		if (PlayerPrefs.HasKey("UseRift")) {
+			riftCam.SetActive(true);
+			stdCam.SetActive(false);
+			camController = GetComponentInChildren<OVRCameraController>();
+		} else {
+			riftCam.SetActive(false);
+			stdCam.SetActive(true);
+		}
+
+		yRotOffset = transform.eulerAngles.y;
+
 		charController = GetComponent<CharacterController>();
-		camController = GetComponentInChildren<OVRCameraController>();
 	}
 
 	void Update () {
@@ -19,8 +31,15 @@ public class AvatarController : MonoBehaviour {
 		float turn = Input.GetAxis ("Horizontal") * turnSpeed;
 		charController.Move(fwdDir.transform.forward * fwd * Time.deltaTime);
 		
-		fwdDir.transform.rotation = camController.gameObject.transform.rotation;
-		camController.SetYRotation(yRotOffset);
+		if (camController != null) {
+			fwdDir.transform.rotation = camController.gameObject.transform.rotation;
+			camController.SetYRotation(yRotOffset);	
+		} else {
+			Vector3 desOrientation = new Vector3(0.0f, yRotOffset, 0.0f);
+			fwdDir.transform.eulerAngles = desOrientation;
+			stdCam.transform.eulerAngles = desOrientation;
+		}
+		
 		yRotOffset += turn * Time.deltaTime;
 	}
 }
