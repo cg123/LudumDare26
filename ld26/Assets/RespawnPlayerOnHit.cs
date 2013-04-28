@@ -15,7 +15,7 @@ public class RespawnPlayerOnHit : MonoBehaviour {
 
 	void OnTriggerEnter (Collider other) {
 		if (other.gameObject.CompareTag("Player")) {
-			other.gameObject.transform.position = GameObject.FindWithTag("Respawn").transform.position;
+			other.gameObject.SendMessage("Respawn");
 		}
 	}
 }
