@@ -36,6 +36,15 @@ public class DeathFade : MonoBehaviour {
 		endDuration = 1.0f;
 	}
 
+	public float StartWhiteFade () {
+		SetTextureColor(Color.white);
+		timeElapsed = 0.0f;
+		startDuration = 1.0f;
+		pauseDuration = 2.0f;
+		endDuration = 1.0f;
+		return startDuration+pauseDuration+endDuration;
+	}
+
 	void OnGUI () {
 		timeElapsed += Time.deltaTime;
 		if (timeElapsed < startDuration) {

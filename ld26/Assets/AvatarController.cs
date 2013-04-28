@@ -13,17 +13,26 @@ public class AvatarController : MonoBehaviour {
 
 	void Awake () {
 		if (PlayerPrefs.HasKey("UseRift")) {
-			riftCam.SetActive(true);
-			stdCam.SetActive(false);
-			camController = GetComponentInChildren<OVRCameraController>();
+			SwitchToRiftCam();
 		} else {
-			riftCam.SetActive(false);
-			stdCam.SetActive(true);
+			SwitchToStandardCam();
 		}
 
 		yRotOffset = transform.eulerAngles.y;
 
 		charController = GetComponent<CharacterController>();
+	}
+
+	private void SwitchToStandardCam () {
+		riftCam.SetActive(false);
+		stdCam.SetActive(true);
+		camController = null;
+	}
+
+	private void SwitchToRiftCam () {
+		riftCam.SetActive(true);
+		stdCam.SetActive(false);
+		camController = GetComponentInChildren<OVRCameraController>();
 	}
 
 	void Update () {
