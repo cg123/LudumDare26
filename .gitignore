@@ -15,3 +15,7 @@ ld26/[Aa]ssets/Plugins/
 *.unityproj
 *.sln
 *.pidb
+
+
+# Ignore audacity source files
+audio/
