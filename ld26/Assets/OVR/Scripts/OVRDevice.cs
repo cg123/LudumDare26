@@ -218,7 +218,9 @@ public class OVRDevice : MonoBehaviour
 	// Destroy
 	void OnDestroy()
 	{
-		OVR_Destroy();
+		if (!Application.isWebPlayer) {
+			OVR_Destroy();
+		}
 		OVRInit = false;
 	}
 	
