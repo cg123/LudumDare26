@@ -145,6 +145,11 @@ public class OVRDevice : MonoBehaviour
 	// Awake
 	void Awake () 
 	{	
+		if (Application.isWebPlayer) {
+			this.enabled = false;
+			return;
+		}
+
 		OVRInit = OVR_Initialize();
 		
 		if(OVRInit == false) 
