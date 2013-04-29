@@ -18,7 +18,6 @@ public class CanRespawn : MonoBehaviour {
 	}
 
 	public void Respawn () {
-		Debug.Log("Respawn!");
 		transform.position = initialPos;
 		transform.rotation = initialRot;
 		for (int i = 0; i < deathFadeCpts.Length; i++) {
