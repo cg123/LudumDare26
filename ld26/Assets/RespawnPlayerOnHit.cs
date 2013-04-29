@@ -6,21 +6,20 @@ using System.Collections;
 public class RespawnPlayerOnHit : MonoBehaviour {
 
 	public AudioClip collisionSound;
+	private ContextualNarration narrator = null;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	void Awake () {
+		narrator = transform.parent.GetComponentInChildren<ContextualNarration>();	
 	}
 
 	void OnTriggerEnter (Collider other) {
 		if (other.gameObject.CompareTag("Player")) {
 			AudioSource.PlayClipAtPoint(collisionSound, other.transform.position);
 			other.gameObject.SendMessage("Respawn");
+			if (narrator != null) {
+				narrator.Hurt();
+			}
 		}
 	}
 }
