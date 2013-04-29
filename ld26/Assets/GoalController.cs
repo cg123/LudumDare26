@@ -6,6 +6,7 @@ public class GoalController : MonoBehaviour {
 
 	void OnTriggerEnter (Collider other) {
 		if (other.CompareTag("Player")) {
+			Instantiate(Resources.Load("OneTimeSuccess"));
 			if (nextLevelName != "") {
 				Application.LoadLevel(nextLevelName);	
 			}
