@@ -16,20 +16,21 @@ public class NextSceneOnArrowPress : MonoBehaviour {
 	void Update () {
 		if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) {
 			if (!switchActivated) {
+				//float fadeDuration = 0.0f;
 				for (int i = 0; i < fadeCpts.Length; i++) {
-					float fadeDuration = fadeCpts[i].StartWhiteFade();
-					Debug.Log("Call Switch Scene " + fadeDuration);
-					SwitchScene(fadeDuration);
+					fadeCpts[i].StartWhiteFadeAndSwitch(nextLevelName);
+					//Debug.Log("Call Switch Scene " + fadeDuration);
 				}	
+				//StartCoroutine(SwitchScene(1.0f));
 				switchActivated = true;
 			}
 		}
 	}
 
-	IEnumerator SwitchScene(float dur) {
+	/*IEnumerator SwitchScene(float dur) {
 		Debug.Log("Switch Scene");
         yield return new WaitForSeconds(dur);
         Application.LoadLevel(nextLevelName);
-    }
+    }*/
 
 }

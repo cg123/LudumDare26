@@ -15,11 +15,6 @@ public class MenuController : MonoBehaviour {
 		}
 	}
 
-	// Use this for initialization
-	void Start () {
-		Application.LoadLevel(nextLevelName);
-	}
-
 	void OnDrawGizmos () {
 		Gizmos.color = Color.cyan;
 		Gizmos.DrawCube(transform.position, Vector3.one);

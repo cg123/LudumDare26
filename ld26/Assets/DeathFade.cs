@@ -11,6 +11,7 @@ public class DeathFade : MonoBehaviour {
 	private float pauseDuration = 0.0f;
 	private float endDuration = 0.0f;
 	//private FadeTypes fadeType = FadeTypes.Inward;
+	private string goalLevel = "";
 
 	void Awake () {
 		fadeTex = new Texture2D(1, 1);
@@ -34,6 +35,16 @@ public class DeathFade : MonoBehaviour {
 		startDuration = 1.0f;
 		pauseDuration = 2.0f;
 		endDuration = 1.0f;
+		goalLevel = "";
+	}
+
+	public void StartWhiteFadeAndSwitch (string level) {
+		SetTextureColor(Color.white);
+		timeElapsed = 0.0f;
+		startDuration = 1.0f;
+		pauseDuration = 2.0f;
+		endDuration = 1.0f;
+		goalLevel = level;
 	}
 
 	public float StartWhiteFade () {
@@ -52,6 +63,10 @@ public class DeathFade : MonoBehaviour {
 		} else if (timeElapsed < startDuration + pauseDuration) {
 			GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), fadeTex);
 		} else if (timeElapsed < startDuration + pauseDuration + endDuration) {
+			if (goalLevel != "") {
+				GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), fadeTex);
+				Application.LoadLevel(goalLevel);
+			}
 			SideBlinds((timeElapsed-startDuration-pauseDuration)/endDuration);
 		}
 
