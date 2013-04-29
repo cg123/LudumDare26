@@ -20,7 +20,7 @@ public class AvatarController : MonoBehaviour {
 
 		yRotOffset = transform.eulerAngles.y;
 
-		charController = GetComponent<CharacterController>();
+		charController = gameObject.GetComponent<CharacterController>();
 	}
 
 	private void SwitchToStandardCam () {
@@ -32,7 +32,7 @@ public class AvatarController : MonoBehaviour {
 	private void SwitchToRiftCam () {
 		riftCam.SetActive(true);
 		stdCam.SetActive(false);
-		camController = GetComponentInChildren<OVRCameraController>();
+		camController = gameObject.GetComponentInChildren<OVRCameraController>();
 	}
 
 	void Update () {

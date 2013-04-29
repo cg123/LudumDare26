@@ -8,7 +8,7 @@ public class CanRespawn : MonoBehaviour {
 	private DeathFade[] deathFadeCpts = null;
 
 	void Awake () {
-		deathFadeCpts = GetComponentsInChildren<DeathFade>();
+		deathFadeCpts = gameObject.GetComponentsInChildren<DeathFade>();
 	}
 
 	// Use this for initialization
