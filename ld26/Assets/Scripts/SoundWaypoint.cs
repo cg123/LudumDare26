@@ -44,7 +44,7 @@ public class SoundWaypoint : MonoBehaviour {
 	
 	void Grab(Transform grabber) {
 		floater.transform.parent = grabber;
-		floater.transform.localPosition = Vector3.zero;
+		floater.transform.localPosition = Vector3.forward;
 		activated = false;
 		grabbed = true;
 	}
@@ -61,7 +61,7 @@ public class SoundWaypoint : MonoBehaviour {
 			float dot = Vector3.Dot(fwd, transform.forward);
 			Debug.Log (dot);
 			if (activated && dot > 0) {
-				Grab(c.transform);
+				Grab(c.GetComponent<AvatarController>().fwdDir.transform);
 				foreach (SoundWaypoint wp in connections) {
 					wp.Activate();
 				}
@@ -82,7 +82,7 @@ public class SoundWaypoint : MonoBehaviour {
 		else {
 			Gizmos.color = Color.gray;
 		}
-		Gizmos.DrawWireCube(transform.position, new Vector3(size.x, size.y, 0));
+		Gizmos.DrawWireCube(transform.position, transform.rotation * new Vector3(size.x, size.y, 0));
 		Gizmos.color = Color.blue;
 		Gizmos.DrawLine(transform.position, transform.position + transform.forward);
 	}
