@@ -6,8 +6,8 @@ public class NeedleController : MonoBehaviour {
 	public float rotationSpeed = 0.0f;
 	public float movementSpeed = 0.0f;
 	public float confirmationRotation = 1.0f;
-	public float chargeTime = 0.5f;
-	private float currChargeLevel = 0.0f;
+	//public float chargeTime = 0.5f;
+	//private float currChargeLevel = 0.0f;
 	
 	public float recoverTime = 2.0f;
 	private float currRecoverTime = 0.0f;
@@ -22,7 +22,7 @@ public class NeedleController : MonoBehaviour {
 	void Respawn () {
 		needleState = NeedleState.recovering;
 		currRecoverTime = 0.0f;
-		currChargeLevel = 0.0f;
+		//currChargeLevel = 0.0f;
 	}
 
 	void Awake () {
@@ -30,7 +30,7 @@ public class NeedleController : MonoBehaviour {
 	}
 	
 	void BeginCharging () {
-		currChargeLevel = 0.0f;
+		//currChargeLevel = 0.0f;
 		needleState = NeedleState.charging;
 		audio.clip = chargingSound;
 		audio.Play();

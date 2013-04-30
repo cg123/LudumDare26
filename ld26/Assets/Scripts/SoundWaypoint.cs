@@ -21,12 +21,8 @@ public class SoundWaypoint : MonoBehaviour {
 		GetComponent<BoxCollider>().isTrigger = true;
 		activated = false;
 		passed = false;
-		if (startActive) {
-			Activate();
-		}
-	}
-	
-	void Activate() {
+		
+		
 		GameObject floaterObj = new GameObject(gameObject.name + " floater");
 		floaterObj.AddComponent(typeof(SoundFloater));
 		floater = floaterObj.GetComponent<SoundFloater>();
@@ -34,18 +30,22 @@ public class SoundWaypoint : MonoBehaviour {
 		floater.transform.localPosition = Vector3.zero;
 		floater.audio.clip = sound;
 		floater.audio.loop = true;
+		floater.audio.volume = 0.01f;
 		floater.audio.Play();
 		floaterObj.AddComponent(typeof(WallMuffler));
 		floaterObj.GetComponent<WallMuffler>().playerObject = GameObject.FindGameObjectWithTag("Player").transform;
 		
+		if (startActive) {
+			Activate();
+		}
+	}
+	
+	void Activate() {
+		floater.audio.volume = 1.0f;
 		activated = true;
 	}
 	void Deactivate() {
-		floater.audio.Stop();
-		Destroy (floater.gameObject);
-		floater = null;
-		
-		passed = false;
+		floater.audio.volume = 0.01f;
 		activated = false;
 	}
 	
