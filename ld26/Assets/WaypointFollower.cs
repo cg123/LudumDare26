@@ -26,7 +26,7 @@ public class WaypointFollower : MonoBehaviour {
 
 	void ReachedWaypoint () {
 		if (sound) {
-			sound.Play();
+			//sound.Play();
 		}
 		bool reachedEnd = currIdx + dir > waypointList.Length-1;
 		bool reachedStart = currIdx + dir < 0;

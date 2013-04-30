@@ -19,13 +19,14 @@ public class NeedleController : MonoBehaviour {
 	private Rigidbody rigidBody = null;
 	private BoxCollider boxCollider = null;
 
-	void Awake () {
-		rigidBody = gameObject.GetComponent<Rigidbody>();
+	void Respawn () {
+		needleState = NeedleState.recovering;
+		currRecoverTime = 0.0f;
+		currChargeLevel = 0.0f;
 	}
 
-	// Use this for initialization
-	void Start () {
-	
+	void Awake () {
+		rigidBody = gameObject.GetComponent<Rigidbody>();
 	}
 	
 	void BeginCharging () {
