@@ -67,7 +67,7 @@ public class SoundWaypoint : MonoBehaviour {
 		if (c.GetComponent<AvatarController>() != null) {
 			Vector3 fwd = c.GetComponent<AvatarController>().fwdDir.transform.forward;
 			float dot = Vector3.Dot(fwd, transform.forward);
-			Debug.Log (dot);
+			//Debug.Log (dot);
 			if (activated && dot > 0) {
 				if (grabSound) {
 					Grab(c.GetComponent<AvatarController>().fwdDir.transform);
