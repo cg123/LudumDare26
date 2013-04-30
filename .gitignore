@@ -19,3 +19,6 @@ ld26/[Aa]ssets/Plugins/
 
 # Ignore audacity source files
 audio/
+
+# Ignore binaries
+builds/
