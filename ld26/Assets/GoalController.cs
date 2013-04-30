@@ -8,6 +8,11 @@ public class GoalController : MonoBehaviour {
 		if (other.CompareTag("Player")) {
 			Instantiate(Resources.Load("OneTimeSuccess"));
 			if (nextLevelName != "") {
+				if (nextLevelName == "ClosingScreen") {
+					foreach (DeathFade fade in other.GetComponentsInChildren<DeathFade>()) {
+						fade.StartWhiteFade(true);
+					}
+				}
 				Application.LoadLevel(nextLevelName);	
 			}
 		}
