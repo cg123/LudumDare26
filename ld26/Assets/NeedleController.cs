@@ -8,7 +8,13 @@ public class NeedleController : MonoBehaviour {
 	public float confirmationRotation = 1.0f;
 	public float chargeTime = 0.5f;
 	private float currChargeLevel = 0.0f;
-	public enum NeedleState {facing = 0, charging, striking};
+	
+	public float recoverTime = 2.0f;
+	private float currRecoverTime = 0.0f;
+	
+	public AudioClip chargingSound = null;
+	public AudioClip strikingSound = null;
+	public enum NeedleState {facing = 0, charging, striking, recovering};
 	public NeedleState needleState = NeedleState.facing;
 	private Rigidbody rigidBody = null;
 	private BoxCollider boxCollider = null;
@@ -25,19 +31,30 @@ public class NeedleController : MonoBehaviour {
 	void BeginCharging () {
 		currChargeLevel = 0.0f;
 		needleState = NeedleState.charging;
+		audio.clip = chargingSound;
+		audio.Play();
+		//AudioSource.PlayClipAtPoint(chargingSound, transform.position);
 	}
 
 	void BeginStriking () {
 		needleState = NeedleState.striking;
 		rigidBody.AddForce(transform.forward * movementSpeed);
+		audio.clip = strikingSound;
+		audio.Play();
+		//AudioSource.PlayClipAtPoint(strikingSound, transform.position);
 	}
 
 	void BeginFacing () {
 		needleState = NeedleState.facing;
 	}
 
+	void BeginRecovering () {
+		needleState = NeedleState.recovering;
+		currRecoverTime = 0.0f;
+	}
+
 	void OnCollisionEnter(Collision collision) {
-		BeginFacing();
+		BeginRecovering();
 	}
 
 	// Update is called once per frame
@@ -49,20 +66,30 @@ public class NeedleController : MonoBehaviour {
 				rigidBody.velocity = new Vector3(0,0,0);
 				rigidBody.angularVelocity = new Vector3(0,0,0);
       			targetRotation = Quaternion.LookRotation(new Vector3(target.position.x,0,target.position.z) - new Vector3(transform.position.x,0,transform.position.z));
-				transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Mathf.Min (rotationSpeed * Time.deltaTime, 1));
+				transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Mathf.Min (rotationSpeed * Time.deltaTime, 1));
 				// In Range?
 				if (Mathf.Abs(transform.eulerAngles.y - targetRotation.eulerAngles.y) <= confirmationRotation) {
+					transform.rotation = targetRotation;
 					BeginCharging();
 				}
 				break;
 			case NeedleState.charging:
-				currChargeLevel += Time.deltaTime;
-				if (currChargeLevel >= chargeTime) {
+				//currChargeLevel += Time.deltaTime;
+				if (!audio.isPlaying) {
+				//if (currChargeLevel >= chargeTime) {
 					BeginStriking();
 				}
 				break;
 			case NeedleState.striking:
 				//transform.position += transform.forward * movementSpeed * Time.deltaTime;
+				break;
+			case NeedleState.recovering:
+				rigidBody.velocity = new Vector3(0,0,0);
+				rigidBody.angularVelocity = new Vector3(0,0,0);
+				currRecoverTime += Time.deltaTime;
+				if (currRecoverTime >= recoverTime) {
+					BeginFacing();
+				}
 				break;
 			default:
 				break;
