@@ -5,18 +5,23 @@ public class SoundWaypoint : MonoBehaviour {
 	public AudioClip sound;
 	public Vector2 size = new Vector2(1, 1);
 	public SoundWaypoint[] connections;
+	public SoundWaypoint[] deactivateOnPass;
+	public float followingVolume = 0.5f;
+	public bool startActive = true;
+	public bool grabSound = false;
 	
 	private SoundFloater floater;
 	private bool activated;
-	private bool grabbed;
+	private bool passed;
+	private float oldVolume;
 	
 	void Start() {
 		gameObject.AddComponent(typeof(BoxCollider));
 		GetComponent<BoxCollider>().size = new Vector3(size.x, size.y, 0);
 		GetComponent<BoxCollider>().isTrigger = true;
 		activated = false;
-		grabbed = false;
-		if (connections.Length == 0) {
+		passed = false;
+		if (startActive) {
 			Activate();
 		}
 	}
@@ -30,6 +35,8 @@ public class SoundWaypoint : MonoBehaviour {
 		floater.audio.clip = sound;
 		floater.audio.loop = true;
 		floater.audio.Play();
+		floaterObj.AddComponent(typeof(WallMuffler));
+		floaterObj.GetComponent<WallMuffler>().playerObject = GameObject.FindGameObjectWithTag("Player").transform;
 		
 		activated = true;
 	}
@@ -38,7 +45,7 @@ public class SoundWaypoint : MonoBehaviour {
 		Destroy (floater.gameObject);
 		floater = null;
 		
-		grabbed = false;
+		passed = false;
 		activated = false;
 	}
 	
@@ -46,13 +53,14 @@ public class SoundWaypoint : MonoBehaviour {
 		floater.transform.parent = grabber;
 		floater.transform.localPosition = Vector3.forward;
 		activated = false;
-		grabbed = true;
+		oldVolume = floater.audio.volume;
+		floater.audio.volume *= followingVolume;
 	}
 	void Ungrab() {
 		floater.transform.parent = transform;
 		floater.transform.localPosition = Vector3.zero;
 		activated = true;
-		grabbed = false;
+		floater.audio.volume = oldVolume;
 	}
 	
 	void OnTriggerEnter(Collider c) {
@@ -61,16 +69,34 @@ public class SoundWaypoint : MonoBehaviour {
 			float dot = Vector3.Dot(fwd, transform.forward);
 			Debug.Log (dot);
 			if (activated && dot > 0) {
-				Grab(c.GetComponent<AvatarController>().fwdDir.transform);
+				if (grabSound) {
+					Grab(c.GetComponent<AvatarController>().fwdDir.transform);
+				}
+				else {
+					Deactivate();
+				}
 				foreach (SoundWaypoint wp in connections) {
 					wp.Activate();
 				}
+				foreach (SoundWaypoint wp in deactivateOnPass) {
+					wp.Deactivate();
+				}
+				passed = true;
 			}
-			else if (grabbed && dot < 0) {
-				Ungrab();
+			else if (passed && dot < 0) {
+				if (grabSound) {
+					Ungrab();
+				}
+				else {
+					Activate();
+				}
 				foreach (SoundWaypoint wp in connections) {
 					wp.Deactivate();
 				}
+				foreach (SoundWaypoint wp in deactivateOnPass) {
+					wp.Activate();
+				}
+				passed = false;
 			}
 		}
 	}
