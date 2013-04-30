@@ -5,10 +5,12 @@ public class SoundWaypoint : MonoBehaviour {
 	public AudioClip sound;
 	public Vector2 size = new Vector2(1, 1);
 	public SoundWaypoint[] connections;
+	public float followingVolume = 0.5f;
 	
 	private SoundFloater floater;
 	private bool activated;
 	private bool grabbed;
+	private float oldVolume;
 	
 	void Start() {
 		gameObject.AddComponent(typeof(BoxCollider));
@@ -47,12 +49,15 @@ public class SoundWaypoint : MonoBehaviour {
 		floater.transform.localPosition = Vector3.forward;
 		activated = false;
 		grabbed = true;
+		oldVolume = floater.audio.volume;
+		floater.audio.volume *= followingVolume;
 	}
 	void Ungrab() {
 		floater.transform.parent = transform;
 		floater.transform.localPosition = Vector3.zero;
 		activated = true;
 		grabbed = false;
+		floater.audio.volume = oldVolume;
 	}
 	
 	void OnTriggerEnter(Collider c) {
