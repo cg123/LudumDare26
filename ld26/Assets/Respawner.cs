@@ -9,4 +9,11 @@ public class Respawner : MonoBehaviour {
 			respawnables[i].BeginRespawn();
 		}
 	}
+
+	public void ResumeAll () {
+		CanRespawn[] respawnables = gameObject.GetComponentsInChildren<CanRespawn>();
+		for (int i = 0; i < respawnables.Length; i++) {
+			respawnables[i].BeginResume();
+		}	
+	}
 }

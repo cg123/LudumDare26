@@ -12,8 +12,10 @@ public class WaypointFollower : MonoBehaviour {
 	private int dir = 1;
 	private bool pingPong = true;
 	private AudioSource sound = null;
+	private bool movementEnabled = true;
 
 	void Awake () {
+		movementEnabled = true;
 		sound = GetComponent<AudioSource>();
 		currIdx = firstIdx;
 		dir = initialDir;
@@ -46,12 +48,14 @@ public class WaypointFollower : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		// Got to waypoint?
-		if ((transform.position - waypointList[currIdx].gameObject.transform.position).magnitude <= confirmationDist) {
-			ReachedWaypoint();		
-		} else {
-			transform.position += (waypointList[currIdx].gameObject.transform.position - transform.position) * Time.deltaTime * moveSpeed;
-			transform.LookAt(waypointList[currIdx].gameObject.transform.position);
+		if (movementEnabled) {
+			// Got to waypoint?
+			if ((transform.position - waypointList[currIdx].gameObject.transform.position).magnitude <= confirmationDist) {
+				ReachedWaypoint();		
+			} else {
+				transform.position += (waypointList[currIdx].gameObject.transform.position - transform.position) * Time.deltaTime * moveSpeed;
+				transform.LookAt(waypointList[currIdx].gameObject.transform.position);
+			}	
 		}
 	}
 
@@ -66,6 +70,11 @@ public class WaypointFollower : MonoBehaviour {
 	public void Respawn () {
 		currIdx = firstIdx;
 		dir = initialDir;
+		movementEnabled = false;
+	}
+
+	public void Resume () {
+		movementEnabled = true;
 	}
 
 }

@@ -19,13 +19,21 @@ public class NeedleController : MonoBehaviour {
 	private Rigidbody rigidBody = null;
 	private BoxCollider boxCollider = null;
 
-	void Respawn () {
+	private bool movementEnabled = false;
+
+	public void Respawn () {
 		needleState = NeedleState.recovering;
 		currRecoverTime = 0.0f;
 		//currChargeLevel = 0.0f;
+		movementEnabled = false;
+	}
+
+	public void Resume () {
+		movementEnabled = true;
 	}
 
 	void Awake () {
+		movementEnabled = true;
 		rigidBody = gameObject.GetComponent<Rigidbody>();
 	}
 	

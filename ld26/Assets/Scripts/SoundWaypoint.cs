@@ -39,6 +39,14 @@ public class SoundWaypoint : MonoBehaviour {
 			Activate();
 		}
 	}
+
+	public void Respawn() {
+		Deactivate();
+		if (startActive) {
+			Activate();
+		}
+	}
+
 	
 	void Activate() {
 		floater.audio.volume = 1.0f;

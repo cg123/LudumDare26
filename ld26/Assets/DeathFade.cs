@@ -14,9 +14,11 @@ public class DeathFade : MonoBehaviour {
 	private float endDuration = 0.0f;
 	//private FadeTypes fadeType = FadeTypes.Inward;
 	private string goalLevel = "";
+	private bool deathFadeInProgress = false;
 
 	void Awake () {
 		fadeTex = new Texture2D(1, 1);
+		deathFadeInProgress = false;
 	}
 
 	void SetTextureColor (Color newScreenOverlayColor) {
@@ -61,6 +63,13 @@ public class DeathFade : MonoBehaviour {
 		pauseDuration = 2.0f;
 		endDuration = 1.0f;
 		goalLevel = "";
+		deathFadeInProgress = true;
+	}
+
+	public void FinishDeathFade () {
+		deathFadeInProgress = false;
+		Respawner respawner = transform.parent.parent.GetComponent<Respawner>();
+		respawner.ResumeAll();
 	}
 
 	public void StartWhiteFadeAndSwitch (string level, bool reverse = false) {
@@ -97,6 +106,8 @@ public class DeathFade : MonoBehaviour {
 				Application.LoadLevel(goalLevel);
 			}
 			Blinds((timeElapsed-startDuration-pauseDuration)/endDuration);
+		} else if (deathFadeInProgress) {
+			FinishDeathFade();
 		}
 
 	}
